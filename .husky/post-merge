@@ -1,10 +1,11 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn ||
+yarn install ||
     (
         echo '❌ Failed to do yarn.'
+        echo 'Please try using "yarn install" command again.'
         false
     )
 
-echo 'Please try using "yarn" command again.'
+echo 'Dependcies installed.'
