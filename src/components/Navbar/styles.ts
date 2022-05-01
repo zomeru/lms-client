@@ -6,6 +6,8 @@ export const StyledNavbar = styled.header`
 `;
 
 export const StyledNavItems = styled.nav`
+  max-width: var(--max-width);
+  margin: 0 auto;
   padding: 0 70px;
   display: flex;
   justify-content: space-between;
