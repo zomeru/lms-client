@@ -1,12 +1,18 @@
 import type { NextPage } from 'next';
 
-import { Layout, Navbar } from '@/components';
+import { Layout, Navbar, Section } from '@/components';
+import { colors } from '@styles/theme';
 
 const Home: NextPage = () => {
   return (
-    <Layout>
+    <>
       <Navbar />
-    </Layout>
+      <Layout>
+        <Section bgColor={colors.primary} className="">
+          <h1>Hello Next.js</h1>
+        </Section>
+      </Layout>
+    </>
   );
 };
 

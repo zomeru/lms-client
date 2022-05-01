@@ -1,3 +1,10 @@
+export const colors = {
+  primary: '#003262',
+  secondary: '#FDB515',
+  white: '#f5f5f5',
+  black: '#000000'
+};
+
 export const lightTheme: any = {
   body: '#E8EEF1', // WHITE
   textMain: '#1E3D58', // NAVY BLUE
@@ -6,10 +13,10 @@ export const lightTheme: any = {
   floatBG: '#d3edfe',
   menuNav: '#cfe7e4',
   blogTitleCard: 'rgba(232, 238, 241, 0.85)',
-  colorPrimary: '#003262',
-  colorSecondary: '#FDB515',
-  whiteTLM: '#f5f5f5',
-  blackTLM: '#000000'
+  colorPrimary: colors.primary,
+  colorSecondary: colors.secondary,
+  whiteTLM: colors.white,
+  blackTLM: colors.black
 };
 
 export const darkTheme: any = {

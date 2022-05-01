@@ -60,4 +60,8 @@ export const StyledNavItems = styled.nav`
   .nav-links {
     color: ${({ theme }) => theme.whiteTLM};
   }
+
+  .bgPrimary {
+    background-color: ${({ theme }) => theme.colorPrimary};
+  }
 `;
