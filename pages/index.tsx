@@ -5,7 +5,7 @@ import { Layout, Navbar } from '@/components';
 const Home: NextPage = () => {
   return (
     <Layout>
-      <Navbar></Navbar>
+      <Navbar />
     </Layout>
   );
 };

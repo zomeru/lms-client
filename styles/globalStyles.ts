@@ -1,7 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
+import { ThemeProps } from './theme';
 import Variables from './variables';
 
-export const GlobalStyles = createGlobalStyle`
+export const GlobalStyles = createGlobalStyle<ThemeProps>`
   ${Variables};
 
   *,
@@ -20,7 +21,7 @@ export const GlobalStyles = createGlobalStyle`
   //? Scrollbar styles 
   html {
     scrollbar-width: thin;
-    scrollbar-color: blue; // TODO - change to color you want
+    scrollbar-color: ${({ theme }) => theme.colorPrimary}; 
   }
 
   body::-webkit-scrollbar {
@@ -28,7 +29,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body::-webkit-scrollbar-thumb {
-    background-color: blue; // TODO - change to color you want
+    background-color: ${({ theme }) => theme.colorPrimary};
     border-radius: 10px;
   }
 
@@ -39,5 +40,39 @@ export const GlobalStyles = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
       Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
       sans-serif;
+  }
+
+  a, p, h1, h2, h3, h4, h5, h6 {
+    color: ${({ theme }) => theme.blackTLM};
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  ul, li, ol {
+    list-style: none;
+  }
+
+  .links {
+    /* color: ${({ theme }) => theme.textMain}; */
+    position: relative;
+
+    :hover ::after {
+      width: 100%;
+    }
+
+    ::after {
+      position: absolute;
+      content: '';
+      left: 0;
+      bottom: -3px;
+      height: 2px;
+      border-radius: 1px;
+      width: 0px;
+      background-color: ${({ theme }) => theme.colorSecondary};
+      transition: var(--transition_2);
+    }
   }
 `;
