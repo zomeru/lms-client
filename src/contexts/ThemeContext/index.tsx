@@ -19,7 +19,7 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [theme, toggleTheme] = useTheme();
-  const themeMode = theme === ThemeModes.light ? lightTheme : darkTheme;
+  const themeMode = theme === ThemeModes.LIGHT ? lightTheme : darkTheme;
 
   return (
     <ThemeContext.Provider value={{ toggleTheme, theme }}>
