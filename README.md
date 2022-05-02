@@ -7,13 +7,13 @@
 using ssh
 
 ```
-git clone git@github.com:zomeru/lms-client.git
+git clone -b dev git@github.com:zomeru/lms-client.git
 ```
 
 using https
 
 ```
-git clone https://github.com/zomeru/lms-client.git
+git clone -b dev https://github.com/zomeru/lms-client.git
 ```
 
 #### Go to project directory and pull the latest code

@@ -10,6 +10,6 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   res.status(200).json({
-    des: "Zomer's NextJS Boilerplate with TypeScript and Styled-Components"
+    des: 'Zomeru Cutie'
   });
 }
