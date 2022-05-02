@@ -12,7 +12,10 @@ const Navbar = () => {
     return (
       <>
         {nav.map((el, i) => (
-          <ul className="nav-links-container" key={i}>
+          <ul
+            className="nav-links-container"
+            key={i + 1 + Date.now() + Math.random() * 100000}
+          >
             {el.map(({ name, path }) => (
               <li key={path} className="links nav-link-items">
                 <Link href={path}>
