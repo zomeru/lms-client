@@ -4,31 +4,28 @@ import Link from 'next/link';
 
 import { Logo } from '@/assets/index';
 import { NAV_LINKS } from '@/constants';
-import { StyledNavbar, StyledNavItems } from './styles';
 import { INavLinks } from '@/types';
+import { StyledNavbar, StyledNavItems } from './styles';
 
 const Navbar = () => {
-  const renderNavLinks = (nav: INavLinks[][]) => {
-    return (
-      <>
-        {nav.map((el, i) => (
-          <ul
-            className="nav-links-container"
-            key={i + 1 + Date.now() + Math.random() * 100000}
-          >
-            {el.map(({ name, path }) => (
-              <li key={path} className="links nav-link-items">
-                <Link href={path}>
-                  <a className="links nav-links">{name}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ))}
-      </>
-    );
-  };
-
+  const renderNavLinks = (nav: INavLinks[][]) => (
+    <>
+      {nav.map((el, i) => (
+        <ul
+          className="nav-links-container"
+          key={i + 1 + Date.now() + Math.random() * 100000}
+        >
+          {el.map(({ name, path }) => (
+            <li key={path} className="links nav-link-items">
+              <Link href={path}>
+                <a className="links nav-links">{name}</a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </>
+  );
   return (
     <StyledNavbar>
       <StyledNavItems>
