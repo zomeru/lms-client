@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 
 import { Layout, Navbar, Section } from '@/components';
+import { Hero } from '@/components/page/Home';
 import { colors } from '@styles/theme';
 
 const Home: NextPage = () => {
@@ -9,7 +10,7 @@ const Home: NextPage = () => {
       <Navbar />
       <Layout>
         <Section bgColor={colors.primary} className="">
-          <h1>Hello Next.js</h1>
+          <Hero />
         </Section>
       </Layout>
     </>

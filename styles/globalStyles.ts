@@ -37,7 +37,7 @@ export const GlobalStyles = createGlobalStyle<ThemeProps>`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.3;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
       Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
       sans-serif;
   }

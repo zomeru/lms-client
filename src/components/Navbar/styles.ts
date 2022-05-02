@@ -8,7 +8,7 @@ export const StyledNavbar = styled.header`
 export const StyledNavItems = styled.nav`
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 70px;
+  padding: 0 var(--h-padding-md);
   display: flex;
   justify-content: space-between;
   width: 100%;
