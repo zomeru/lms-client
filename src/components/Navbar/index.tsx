@@ -17,8 +17,11 @@ const Navbar = () => {
         >
           {el.map(({ name, path }) => (
             <li key={path} className="links nav-link-items">
-              <Link href={path}>
-                <a className="links nav-links">{name}</a>
+              <Link href={path} passHref>
+                {/* <p className="links nav-links">{name}</p> */}
+                <a href={`/${path}`} className="links nav-links">
+                  {name}
+                </a>
               </Link>
             </li>
           ))}
@@ -29,7 +32,7 @@ const Navbar = () => {
   return (
     <StyledNavbar>
       <StyledNavItems>
-        <Link href={'/'}>
+        <Link href="/">
           <div className="logo-container">
             <div className="image-wrapper">
               <Image className="logo" src={Logo} />
