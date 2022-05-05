@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 export const StyledHero = styled.div<{ height?: number | string }>`
-  padding: 0 var(--h-padding-md);
+  padding: 0 calc(var(--h-padding-md) + 80px);
   display: flex;
+  min-height: 500px;
   height: ${({ height }) => height};
 
   .hero-header-container {
@@ -19,18 +20,22 @@ export const StyledHero = styled.div<{ height?: number | string }>`
       font-size: 60px;
       line-height: 1;
       font-weight: 800;
-      /* padding-right: 50px; */
     }
 
     .hero-description {
       margin-top: 40px;
-      /* padding-right: 30px; */
     }
   }
 
   .hero-image-container {
     width: 80%;
-    /* background-color: yellow; */
+    height: 100%;
     margin: auto auto;
+    position: relative;
+
+    .hero-image-wrapper {
+      width: 100%;
+      height: auto;
+    }
   }
 `;

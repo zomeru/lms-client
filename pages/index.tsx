@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 
 import { Layout, Navbar, Section, NextSeoHead } from '@/components';
-import { Hero } from '@/components/page/Home';
+import { Hero } from '@/components/_page/Home';
 import { colors } from '@styles/theme';
 
 const Home: NextPage = () => {

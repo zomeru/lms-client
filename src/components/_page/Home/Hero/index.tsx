@@ -8,8 +8,6 @@ import { StyledHero } from './style';
 const Hero = () => {
   const { width } = useDimensions();
 
-  console.log('width', width);
-
   return (
     <StyledHero
       height={
@@ -27,7 +25,12 @@ const Hero = () => {
       </div>
       <div className="hero-image-container">
         <div className="hero-image-wrapper">
-          <Image src={HeroImage} />
+          <Image
+            src={HeroImage}
+            layout="fill"
+            objectFit="contain"
+            objectPosition="center"
+          />
         </div>
       </div>
     </StyledHero>
