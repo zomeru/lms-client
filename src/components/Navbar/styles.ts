@@ -47,7 +47,8 @@ export const StyledNavItems = styled.nav`
     :hover {
       color: ${({ theme }) => theme.colorSecondary};
 
-      a {
+      a,
+      p {
         color: ${({ theme }) => theme.colorSecondary};
       }
     }

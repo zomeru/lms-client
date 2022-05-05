@@ -1,8 +1,7 @@
 import type { NextPage } from 'next';
 
-import { Layout, Navbar, Section, NextSeoHead } from '@/components';
-import { Hero } from '@/components/page/Home';
-import { colors } from '@styles/theme';
+import { Layout, Navbar, NextSeoHead } from '@/components';
+import { Hero, HomeBooks } from '@/components/_page/Home';
 
 const Home: NextPage = () => {
   return (
@@ -10,9 +9,8 @@ const Home: NextPage = () => {
       <NextSeoHead />
       <Navbar />
       <Layout>
-        <Section bgColor={colors.primary} className="">
-          <Hero />
-        </Section>
+        <Hero />
+        <HomeBooks />
       </Layout>
     </>
   );
