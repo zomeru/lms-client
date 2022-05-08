@@ -9,6 +9,19 @@ const HomeBooks = () => {
     'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2016%2F09%2Fkkhp1-lg.jpg'
   );
 
+  const [topBookFavorites, setTopBookFavorites] = React.useState<boolean[]>([]);
+  const [newBookFavorites, setNewBookFavorites] = React.useState<boolean[]>([]);
+
+  const handleFavoriteClick = (
+    i: number,
+    favorites: boolean[],
+    setFavorites: React.Dispatch<React.SetStateAction<boolean[]>>
+  ) => {
+    const newFavorites = [...favorites];
+    newFavorites[i] = !newFavorites[i];
+    setFavorites(newFavorites);
+  };
+
   return (
     <Section>
       <StyledBookContainer>
@@ -22,6 +35,14 @@ const HomeBooks = () => {
                   title="Title here"
                   rating={0}
                   image={img}
+                  favorite={topBookFavorites[i]}
+                  onFavoriteClick={() =>
+                    handleFavoriteClick(
+                      i,
+                      topBookFavorites,
+                      setTopBookFavorites
+                    )
+                  }
                 />
               ))}
           </div>
@@ -36,6 +57,14 @@ const HomeBooks = () => {
                   title="Title here"
                   rating={0}
                   image={img}
+                  favorite={newBookFavorites[i]}
+                  onFavoriteClick={() =>
+                    handleFavoriteClick(
+                      i,
+                      newBookFavorites,
+                      setNewBookFavorites
+                    )
+                  }
                 />
               ))}
           </div>
