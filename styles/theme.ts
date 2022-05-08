@@ -1,5 +1,6 @@
 export const colors = {
   primary: '#003262',
+  primary_50: '#003362c0',
   secondary: '#FDB515',
   white: '#f5f5f5',
   black: '#000000'
@@ -14,6 +15,7 @@ export const lightTheme: any = {
   menuNav: '#cfe7e4',
   blogTitleCard: 'rgba(232, 238, 241, 0.85)',
   colorPrimary: colors.primary,
+  colorPrimary_50: colors.primary_50,
   colorSecondary: colors.secondary,
   whiteTLM: colors.white,
   blackTLM: colors.black
@@ -28,6 +30,7 @@ export const darkTheme: any = {
   menuNav: '#142746',
   blogTitleCard: 'rgba(13, 26, 37, 0.85)',
   colorPrimary: '#003262',
+  colorPrimary_50: colors.primary_50,
   colorSecondary: '#FDB515',
   whiteTLM: '#f5f5f5',
   blackTLM: '#000000'

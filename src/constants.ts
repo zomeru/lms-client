@@ -1,6 +1,6 @@
 import { INavLinks } from './types';
 
-export const APP_NAME = 'STICA One Library';
+export const APP_NAME = 'One STICA Library';
 
 export const NAV_LINKS: INavLinks[][] = [
   [
