@@ -30,7 +30,7 @@ export const GlobalStyles = createGlobalStyle<ThemeProps>`
 
   body::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) => theme.colorPrimary};
-    border-radius: 10px;
+    /* border-radius: 10px; */
   }
 
   body {

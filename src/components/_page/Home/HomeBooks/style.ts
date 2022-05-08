@@ -9,6 +9,8 @@ export const StyledBookContainer = styled.div`
     text-align: center;
     font-size: 32px;
     margin-bottom: 20px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colorPrimary};
   }
 
   .top-book-container {

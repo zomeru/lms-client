@@ -105,6 +105,7 @@ export const StyledBookCard = styled.div`
     background-color: ${({ theme }) => theme.colorPrimary};
     padding: 4px 8px;
     border-radius: 5px;
+    cursor: pointer;
 
     p {
       color: ${({ theme }) => theme.whiteTLM};
