@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 
-import { Layout, Navbar, NextSeoHead } from '@/components';
+import { Layout, Navbar, NextSeoHead, Footer } from '@/components';
 import { Hero, HomeBooks, Contact } from '@/components/_page/Home';
 
 const Home: NextPage = () => {
@@ -13,6 +13,7 @@ const Home: NextPage = () => {
         <HomeBooks />
         <Contact />
       </Layout>
+      <Footer />
     </>
   );
 };

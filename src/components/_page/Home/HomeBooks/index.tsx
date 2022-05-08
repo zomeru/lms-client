@@ -26,7 +26,7 @@ const HomeBooks = () => {
     <Section>
       <StyledBookContainer>
         <div className="top-book-container">
-          <div className="header-title">Top Books</div>
+          <h2 className="header-title">Top Books</h2>
           <div className="book-container">
             {images &&
               images.map((img, i) => (
@@ -48,7 +48,7 @@ const HomeBooks = () => {
           </div>
         </div>
         <div className="new-book-container">
-          <div className="header-title">New Books</div>
+          <h2 className="header-title">New Books</h2>
           <div className="book-container">
             {images &&
               images.map((img, i) => (
