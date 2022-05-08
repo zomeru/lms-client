@@ -3,8 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Logo } from '@/assets/index';
-import { NAV_LINKS } from '@/constants';
+import { APP_NAME, NAV_LINKS } from '@/constants';
 import { INavLinks } from '@/types';
+import { keyGenerator } from '@/utils';
 import { StyledNavbar, StyledNavItems } from './styles';
 
 const Navbar = () => {
@@ -13,7 +14,7 @@ const Navbar = () => {
       {nav.map((el, i) => (
         <ul
           className="nav-links-container"
-          key={`${el[i].name}_${Date.now() + Math.random() * 100000}`}
+          key={`${el[i].name}_${keyGenerator(i)}`}
         >
           {el.map(({ name, path }) => (
             <li key={path} className="links nav-link-items">
@@ -32,12 +33,12 @@ const Navbar = () => {
   return (
     <StyledNavbar>
       <StyledNavItems>
-        <Link href="/">
+        <Link href="/" passHref>
           <div className="logo-container">
             <div className="image-wrapper">
               <Image className="logo" src={Logo} />
             </div>
-            <p className="logo-text">STICA One Library</p>
+            <p className="logo-text">{APP_NAME}</p>
           </div>
         </Link>
         {renderNavLinks(NAV_LINKS)}

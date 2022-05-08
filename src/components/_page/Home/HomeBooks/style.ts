@@ -2,10 +2,13 @@ import styled from 'styled-components';
 
 export const StyledBookContainer = styled.div`
   padding: 70px var(--h-padding-md);
+  max-width: 1500px;
+  margin: 0 auto;
 
   .header-title {
     text-align: center;
     font-size: 32px;
+    margin-bottom: 20px;
   }
 
   .top-book-container {
@@ -13,5 +16,10 @@ export const StyledBookContainer = styled.div`
   }
 
   .new-book-container {
+  }
+
+  .book-container {
+    display: flex;
+    justify-content: space-between;
   }
 `;
