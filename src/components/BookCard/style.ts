@@ -80,7 +80,8 @@ export const StyledBookCard = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #dfdfdfb2;
+    /* background-color: #dfdfdfb2; */
+    background-color: ${({ theme }) => theme.colorPrimary};
   }
 
   .fav-button {
@@ -94,7 +95,8 @@ export const StyledBookCard = styled.div`
     width: 25px;
     height: 25px;
     cursor: pointer;
-    color: ${({ theme }) => theme.colorPrimary};
+    /* color: ${({ theme }) => theme.colorPrimary}; */
+    color: ${({ theme }) => theme.colorSecondary};
   }
 
   .button-container {
@@ -102,13 +104,15 @@ export const StyledBookCard = styled.div`
   }
 
   .btn {
-    background-color: ${({ theme }) => theme.colorPrimary};
+    /* background-color: ${({ theme }) => theme.colorPrimary}; */
+    background-color: ${({ theme }) => theme.colorSecondary};
     padding: 4px 8px;
     border-radius: 5px;
     cursor: pointer;
 
     p {
-      color: ${({ theme }) => theme.whiteTLM};
+      /* color: ${({ theme }) => theme.whiteTLM}; */
+      color: ${({ theme }) => theme.colorPrimary};
     }
   }
 `;
