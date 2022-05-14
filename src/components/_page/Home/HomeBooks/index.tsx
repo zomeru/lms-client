@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Section, BookCard } from '@/components';
 import { keyGenerator } from '@/utils';
@@ -9,8 +9,8 @@ const HomeBooks = () => {
     'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2016%2F09%2Fkkhp1-lg.jpg'
   );
 
-  const [topBookFavorites, setTopBookFavorites] = React.useState<boolean[]>([]);
-  const [newBookFavorites, setNewBookFavorites] = React.useState<boolean[]>([]);
+  const [topBookFavorites, setTopBookFavorites] = useState<boolean[]>([]);
+  const [newBookFavorites, setNewBookFavorites] = useState<boolean[]>([]);
 
   const handleFavoriteClick = (
     i: number,

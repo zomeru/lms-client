@@ -1,4 +1,6 @@
 import React from 'react';
+import Footer from '../Footer';
+import Navbar from '../Navbar';
 import { StyledLayout } from './styles';
 
 interface LayoutProps {
@@ -6,7 +8,13 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  return <StyledLayout>{children}</StyledLayout>;
+  return (
+    <>
+      <Navbar />
+      <StyledLayout>{children}</StyledLayout>;
+      <Footer />
+    </>
+  );
 };
 
 export default Layout;
