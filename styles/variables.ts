@@ -12,6 +12,8 @@ const Variables = css`
     --transition_3: all 0.3s ease-in-out;
     --bdr: 4px;
     --h-padding-md: 70px;
+    --h-padding-sm: 50px;
+    --h-padding-xs: 30px;
   }
 `;
 

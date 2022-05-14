@@ -11,7 +11,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <Navbar />
-      <StyledLayout>{children}</StyledLayout>;
+      <StyledLayout>{children}</StyledLayout>
       <Footer />
     </>
   );

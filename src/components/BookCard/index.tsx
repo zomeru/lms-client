@@ -10,19 +10,23 @@ export interface BookCardProps {
   title: string;
   image: string;
   rating: number;
+  id: string | number;
   favorite?: boolean;
   onFavoriteClick?: () => void;
+  className?: string;
 }
 
 const BookCard = ({
   title,
   image,
+  id,
   favorite,
   onFavoriteClick,
-  rating
+  rating,
+  className = ''
 }: BookCardProps) => {
   return (
-    <StyledBookCard>
+    <StyledBookCard className={className}>
       <div className="image-wrapper">
         <Image
           className="image"
@@ -53,7 +57,7 @@ const BookCard = ({
           )}
         </div>
 
-        <Link href="/books/123" passHref>
+        <Link href={`/books/${id}`} passHref>
           <div className="btn btn-2">
             <p>Details</p>
           </div>

@@ -14,6 +14,7 @@ export const StyledFooter = styled.footer`
   .footer-link-wrapper {
     display: flex;
     justify-content: space-between;
+    padding: 0 var(--h-padding-md);
   }
 
   .link-wrapper {

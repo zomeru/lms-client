@@ -31,6 +31,7 @@ const HomeBooks = () => {
             {images &&
               images.map((img, i) => (
                 <BookCard
+                  id={keyGenerator(i)}
                   key={`${img}_${keyGenerator(i)}`}
                   title="Title here"
                   rating={0}
@@ -53,6 +54,7 @@ const HomeBooks = () => {
             {images &&
               images.map((img, i) => (
                 <BookCard
+                  id={keyGenerator(i)}
                   key={`${img}_${keyGenerator(i)}`}
                   title="Title here"
                   rating={0}
