@@ -3,7 +3,8 @@ export const colors = {
   primary_50: '#003362c0',
   secondary: '#FDB515',
   white: '#f5f5f5',
-  black: '#000000'
+  black: '#414141',
+  lightGray: '#e4e4e4'
 };
 
 export const lightTheme: any = {

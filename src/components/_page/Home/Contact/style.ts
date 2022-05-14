@@ -69,8 +69,10 @@ export const StyledContactForm = styled.form`
       border-radius: 5px;
       font-size: 18px;
       color: ${({ theme }) => theme.colorPrimary};
+      background-color: ${({ theme }) => theme.colorSecondary};
       font-weight: 600;
       border: none;
+      cursor: pointer;
     }
   }
 `;
