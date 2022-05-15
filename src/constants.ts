@@ -19,13 +19,13 @@ export const NAV_LINKS: INavLinks[][] = [
   ],
   [
     {
-      name: 'Sign in',
-      path: '/signin'
-    },
-    {
-      name: 'Sign up',
-      path: '/signup'
+      name: 'Sign in / Sign up',
+      path: '/auth'
     }
+    // {
+    //   name: 'Sign up',
+    //   path: '/signup'
+    // }
   ]
 ];
 
@@ -63,4 +63,18 @@ export const FOOTER_LINKS = [
       // }
     ]
   }
+];
+
+export const SIGN_IN_INPUTS = [
+  { name: 'Email', type: 'email' },
+  { name: 'Password', type: 'password' }
+];
+
+export const SIGN_UP_INPUTS = [
+  { name: 'Student No.', type: 'text' },
+  { name: 'First Name', type: 'text' },
+  { name: 'Last Name', type: 'text' },
+  { name: 'Email', type: 'email' },
+  { name: 'Password', type: 'password' },
+  { name: 'Confirm Password', type: 'password' }
 ];

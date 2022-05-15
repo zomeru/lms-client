@@ -6,11 +6,17 @@ export interface SimpleButtonProps {
   text: string;
   onClick?: () => void;
   className?: string;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const SimpleButton = ({ text, onClick, className = '' }: SimpleButtonProps) => {
+const SimpleButton = ({
+  text,
+  onClick,
+  className = '',
+  type = 'button'
+}: SimpleButtonProps) => {
   return (
-    <StyledSimpleButton className={className} onClick={onClick}>
+    <StyledSimpleButton type={type} className={className} onClick={onClick}>
       {text}
     </StyledSimpleButton>
   );
