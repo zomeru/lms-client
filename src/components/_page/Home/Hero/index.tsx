@@ -11,14 +11,13 @@ const Hero = () => {
   const { width } = useDimensions();
 
   return (
-    <Section bgColor={colors.primary}>
-      <StyledHero
-        height={
-          width <= 1366
-            ? 'calc(100vh - var(--nav-height))'
-            : 'calc(100vh - 30vh)'
-        }
-      >
+    <Section
+      bgColor={colors.primary}
+      height={
+        width <= 1366 ? 'calc(100vh - var(--nav-height))' : 'calc(100vh - 30vh)'
+      }
+    >
+      <StyledHero>
         <div className="hero-header-container">
           <h1 className="hero-header">
             Pick and choose the book according to your needs

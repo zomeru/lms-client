@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledAuthSection = styled.div<{ height?: number | string }>`
-  height: ${({ height }) => height || '800px'};
+export const StyledAuthSection = styled.div`
   max-width: 1500px;
   margin: 0 auto;
   display: flex;
@@ -14,12 +13,7 @@ export const StyledAuthSection = styled.div<{ height?: number | string }>`
   .form-container {
     width: 50%;
     padding: 50px 0;
-    /* background-color: green; */
     padding-left: 50px;
-  }
-
-  .image {
-    /* transform: scale(1.2.); */
   }
 
   .form-header {

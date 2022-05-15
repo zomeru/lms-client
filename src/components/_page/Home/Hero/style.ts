@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-export const StyledHero = styled.div<{ height?: number | string }>`
+export const StyledHero = styled.div`
   padding: 0 calc(var(--h-padding-md) + 80px);
   display: flex;
   min-height: 500px;
-  height: ${({ height }) => height};
+  height: 100%;
 
   .hero-header-container {
     width: 100%;
@@ -35,7 +35,8 @@ export const StyledHero = styled.div<{ height?: number | string }>`
 
     .hero-image-wrapper {
       width: 100%;
-      height: auto;
+      /* height: auto; */
+      height: 100%;
     }
   }
 `;

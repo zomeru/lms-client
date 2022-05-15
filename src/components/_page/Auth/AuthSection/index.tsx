@@ -39,16 +39,9 @@ const AuthSection = () => {
 
   return (
     <Section>
-      <StyledAuthSection
-      // height={
-      //   width <= 1366
-      //     ? 'calc(100vh - var(--nav-height))'
-      //     : 'calc(100vh - 30vh)'
-      // }
-      >
+      <StyledAuthSection>
         <div className="image-container">
           <Image
-            className="image"
             src={LoginImage}
             layout="fill"
             objectFit="cover"
