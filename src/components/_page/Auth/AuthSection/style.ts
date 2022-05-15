@@ -4,6 +4,7 @@ export const StyledAuthSection = styled.div`
   max-width: 1500px;
   margin: 0 auto;
   display: flex;
+  height: 100%;
 
   .image-container {
     width: 50%;

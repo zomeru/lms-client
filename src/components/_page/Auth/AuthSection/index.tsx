@@ -38,13 +38,13 @@ const AuthSection = () => {
   };
 
   return (
-    <Section>
+    <Section height="700px">
       <StyledAuthSection>
         <div className="image-container">
           <Image
             src={LoginImage}
             layout="fill"
-            objectFit="cover"
+            objectFit="contain"
             objectPosition="center"
             quality={80}
           />
