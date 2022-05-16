@@ -21,7 +21,6 @@ import { strongRegex } from '@/utils/functions';
 import { LoginImage } from '@/assets';
 import { SIGN_IN_INPUTS, SIGN_UP_INPUTS } from '@/constants';
 import { IUser } from '@/models/user';
-import { useLocalStorage } from '@/hooks';
 import { useAuth, USER_STORAGE_KEY } from '@/contexts/AuthContext';
 import { StyledAuthSection } from './style';
 
@@ -37,9 +36,6 @@ const AuthSection = () => {
   useEffect(() => {
     if (user) router.push('/');
   }, [user]);
-
-  // eslint-disable-next-line no-unused-vars
-  const [_, setLoggedInUser] = useLocalStorage(USER_STORAGE_KEY, null);
 
   const [authState, setAuthState] = useState<AuthState>(AUTH_SIGN_IN);
 
@@ -111,7 +107,11 @@ const AuthSection = () => {
           const newUserData: any = { ...userData };
           // @ts-ignore
           delete newUserData.password;
-          setLoggedInUser(newUserData);
+          window.localStorage.setItem(
+            USER_STORAGE_KEY,
+            JSON.stringify(newUserData)
+          );
+
           // setLoading(false);
           window.location.href = window.location.origin;
         } else {
@@ -177,7 +177,7 @@ const AuthSection = () => {
           const newUserData: any = { ...userDocData };
           // @ts-ignore
           delete newUserData.password;
-          setLoggedInUser(newUserData);
+          // setLoggedInUser(newUserData);
           setSignUpSuccessText('Sign up successful.');
           clearInputs();
           // router.push('/');
