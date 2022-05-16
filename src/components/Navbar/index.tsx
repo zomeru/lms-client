@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Popover, Transition } from '@headlessui/react';
 
 import { APP_NAME, NAV_LINKS } from '@/constants';
 import { INavLinks } from '@/types';
@@ -47,32 +48,63 @@ const Navbar = () => {
         );
       })}
       {user && (
-        <div className="user-nav">
-          <div className="user-nav-item user-image-wrapper">
-            <Image
-              src={DefaultProfile}
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
-            />
-          </div>
-          <Link href="/my-books" passHref>
-            <div className="user-nav-item links user-link-items">
-              <a href="/my-books" className="links nav-links">
-                My books
-              </a>
+        <Popover className="profile-popover">
+          <Popover.Button className="profile-button">
+            <div className="profile-button-container">
+              <div className="profile-image-wrapper">
+                <Image
+                  src={user?.photoUrl || DefaultProfile}
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition="center"
+                />
+              </div>
+              <span className="profile-username">{user?.username}</span>
             </div>
-          </Link>
-          <div
-            className="user-nav-item logout-button links user-link-items"
-            onClick={handleLogout}
-            onKeyDown={handleLogout}
-            role="button"
-            tabIndex={0}
+          </Popover.Button>
+          <Transition
+            as={React.Fragment}
+            enter="enter"
+            enterFrom="enter-from"
+            enterTo="enter-to"
+            leave="leave"
+            leaveFrom="leave-from"
+            leaveTo="leave-to"
           >
-            <p className="links nav-links">Log out</p>
-          </div>
-        </div>
+            <Popover.Panel className="profile-popover-panel">
+              <div className="popover-panel-container">
+                <button
+                  type="button"
+                  className="panel-item"
+                  onClick={() => router.push('/my-books')}
+                >
+                  <div className="panel-item-text">My books</div>
+                </button>
+                <button
+                  type="button"
+                  className="panel-item"
+                  onClick={() => router.push(`/${user?.username}`)}
+                >
+                  <div className="panel-item-text">Profile</div>
+                </button>
+                <button
+                  type="button"
+                  className="panel-item"
+                  onClick={() => router.push('/settings')}
+                >
+                  <div className="panel-item-text">Settings</div>
+                </button>
+                <button
+                  type="button"
+                  className="panel-item"
+                  onClick={handleLogout}
+                >
+                  <div className="panel-item-text">Log out</div>
+                </button>
+              </div>
+            </Popover.Panel>
+          </Transition>
+        </Popover>
       )}
     </>
   );
