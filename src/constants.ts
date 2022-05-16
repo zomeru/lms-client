@@ -71,10 +71,11 @@ export const SIGN_IN_INPUTS = [
 ];
 
 export const SIGN_UP_INPUTS = [
-  { name: 'Student No.', type: 'text' },
+  // { name: 'Student No.', type: 'text' },
   { name: 'First Name', type: 'text' },
   { name: 'Last Name', type: 'text' },
   { name: 'Email', type: 'email' },
+  { name: 'Username', type: 'text' },
   { name: 'Password', type: 'password' },
   { name: 'Confirm Password', type: 'password' }
 ];

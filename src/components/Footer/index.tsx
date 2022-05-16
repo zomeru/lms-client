@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { APP_NAME, FOOTER_LINKS } from '@/constants';
-import { keyGenerator } from '@/utils';
+import { keyGenerator } from '@/utils/functions';
 import { StyledFooter } from './style';
 
 const Footer = () => {

@@ -65,4 +65,38 @@ export const StyledNavItems = styled.nav`
   .bgPrimary {
     background-color: ${({ theme }) => theme.colorPrimary};
   }
+
+  .user-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-nav-item {
+    :not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+
+  .user-image-wrapper {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  .user-link-items {
+    :hover {
+      color: ${({ theme }) => theme.colorSecondary};
+
+      a,
+      p {
+        color: ${({ theme }) => theme.colorSecondary};
+      }
+    }
+  }
+
+  .logout-button {
+    cursor: pointer;
+  }
 `;

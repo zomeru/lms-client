@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Section, BookCard } from '@/components';
-import { keyGenerator } from '@/utils';
+import { keyGenerator } from '@/utils/functions';
 import { StyledBookContainer } from './style';
 
 const HomeBooks = () => {
