@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { colors } from '@styles/theme';
 
 export const StyledAuthSection = styled.div`
   max-width: 1500px;
@@ -15,6 +16,8 @@ export const StyledAuthSection = styled.div`
     width: 50%;
     padding: 50px 0;
     padding-left: 50px;
+    display: flex;
+    align-items: center;
   }
 
   .form-header {
@@ -31,6 +34,17 @@ export const StyledAuthSection = styled.div`
     :not(:last-child) {
       margin-bottom: 15px;
     }
+  }
+
+  .simple-text-error {
+    color: ${colors.danger};
+    margin-top: 15px;
+    width: 80%;
+  }
+
+  .simple-text-success {
+    color: ${colors.success};
+    margin-top: 15px;
   }
 
   .auth-text {

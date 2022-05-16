@@ -2,14 +2,16 @@ import type { AppProps } from 'next/app';
 import { GlobalStyles } from '@styles/index';
 import React from 'react';
 
-import { ThemeProvider } from '@/contexts';
+import { AuthProvider, ThemeProvider } from '@/contexts';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider>
-      <GlobalStyles />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <GlobalStyles />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

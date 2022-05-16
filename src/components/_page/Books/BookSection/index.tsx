@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 
 import { Section, BookCard, SimpleButton } from '@/components';
-import { keyGenerator } from '@/utils';
+import { keyGenerator } from '@/utils/functions';
 import { StyledBookSection } from './style';
 
 const BookSection = () => {

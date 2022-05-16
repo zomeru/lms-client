@@ -28,7 +28,7 @@ const TextInput = ({
       </label>
       <input
         value={value}
-        onChange={(e) => setValue && setValue(e.target.value)}
+        onChange={(e) => setValue && setValue(e.target.value.trim())}
         className="input"
         type={type}
         placeholder={label}

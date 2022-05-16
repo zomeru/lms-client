@@ -4,7 +4,9 @@ export const colors = {
   secondary: '#FDB515',
   white: '#f5f5f5',
   black: '#414141',
-  lightGray: '#e4e4e4'
+  lightGray: '#e4e4e4',
+  danger: '#d8240c',
+  success: '#11a850'
 };
 
 export const lightTheme: any = {
