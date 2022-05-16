@@ -180,6 +180,10 @@ const AuthSection = () => {
           // @ts-ignore
           delete newUserData.password;
           // setLoggedInUser(newUserData);
+          window.localStorage.setItem(
+            USER_STORAGE_KEY,
+            JSON.stringify(newUserData)
+          );
           setSignUpSuccessText('Sign up successful.');
           clearInputs();
           // router.push('/');
