@@ -17,7 +17,9 @@ const Navbar = () => {
   const handleLogout = () => {
     window.localStorage.removeItem(USER_STORAGE_KEY);
 
-    window.location.href = window.location.origin;
+    setTimeout(() => {
+      window.location.href = window.location.origin;
+    }, 500);
   };
 
   const renderNavLinks = (nav: INavLinks[][]) => (
