@@ -113,7 +113,9 @@ const AuthSection = () => {
           );
 
           // setLoading(false);
-          window.location.href = window.location.origin;
+          setTimeout(() => {
+            window.location.href = window.location.origin;
+          }, 500);
         } else {
           setTextError('Invalid username or password.');
           // setLoading(false);
@@ -181,7 +183,9 @@ const AuthSection = () => {
           setSignUpSuccessText('Sign up successful.');
           clearInputs();
           // router.push('/');
-          window.location.href = window.location.origin;
+          setTimeout(() => {
+            window.location.href = window.location.origin;
+          }, 500);
         })
         .catch((err) => console.log('firebase error', err));
 
