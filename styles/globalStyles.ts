@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { ThemeProps } from './theme';
+import { colors, ThemeProps } from './theme';
 import Variables from './variables';
 
 export const GlobalStyles = createGlobalStyle<ThemeProps>`
@@ -40,6 +40,7 @@ export const GlobalStyles = createGlobalStyle<ThemeProps>`
     font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
       Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
       sans-serif;
+      background-color: ${colors.white};
   }
 
   a, p, h1, h2, h3, h4, h5, h6 {

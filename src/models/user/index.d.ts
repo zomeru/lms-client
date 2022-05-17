@@ -8,11 +8,11 @@ export interface IUser {
   username: string;
   firstName: string;
   lastName: string;
+  email: string;
+  password: string;
   gender?: IGender | null;
   age?: number | null;
-  email: string;
   photoUrl?: string | null;
-  password: string;
   role: IRole[];
   createdAt: FieldValue;
   setupComplete: boolean;
