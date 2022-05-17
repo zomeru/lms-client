@@ -20,7 +20,7 @@ const Navbar = () => {
 
     setTimeout(() => {
       window.location.href = window.location.origin;
-    }, 500);
+    }, 300);
   };
 
   const renderNavLinks = (nav: INavLinks[][]) => (

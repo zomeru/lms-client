@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import {
   doc,
@@ -10,7 +10,6 @@ import {
   serverTimestamp,
   setDoc
 } from 'firebase/firestore';
-import { useRouter } from 'next/router';
 
 import { Section } from '@/components';
 import { TextInput } from '@/components/Input';
@@ -21,7 +20,7 @@ import { strongRegex } from '@/utils/functions';
 import { LoginImage } from '@/assets';
 import { SIGN_IN_INPUTS, SIGN_UP_INPUTS } from '@/constants';
 import { IUser } from '@/models/user';
-import { useAuth, USER_STORAGE_KEY } from '@/contexts/AuthContext';
+import { USER_STORAGE_KEY } from '@/contexts/AuthContext';
 import { StyledAuthSection } from './style';
 
 type AuthState = 'signin' | 'signup';
@@ -29,17 +28,7 @@ const AUTH_SIGN_IN = 'signin';
 const AUTH_SIGN_UP = 'signup';
 
 const AuthSection = () => {
-  // const { width } = useDimensions();
-  const router = useRouter();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (user) router.push('/');
-  }, [user]);
-
   const [authState, setAuthState] = useState<AuthState>(AUTH_SIGN_IN);
-
-  // const [loading, setLoading] = useState(false);
   const [textError, setTextError] = useState<string | null>(null);
   const [signUpSuccessText, setSignUpSuccessText] = useState<string | null>(
     null
@@ -81,17 +70,14 @@ const AuthSection = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setLoading(true);
 
     if (authState === AUTH_SIGN_IN) {
-      // login
+      // ? LOG IN
       const docRef = doc(db, 'users', signInUsername);
       const docSnapshot = await getDoc(docRef);
 
       if (!docSnapshot.exists) {
-        console.log('User not found');
         setTextError('Invalid username or password.');
-        // setLoading(false);
         return;
       }
 
@@ -112,21 +98,19 @@ const AuthSection = () => {
             JSON.stringify(newUserData)
           );
 
-          // setLoading(false);
           setTimeout(() => {
             window.location.href = window.location.origin;
-          }, 500);
+          }, 300);
         } else {
           setTextError('Invalid username or password.');
-          // setLoading(false);
         }
       }
     } else {
-      // register
+      // ? REGISTER
       const userDocData: IUser = {
         firstName,
         lastName,
-        username,
+        username: username.toLowerCase(),
         email,
         password: hashPassword(password),
         role: ['User'],
@@ -144,7 +128,6 @@ const AuthSection = () => {
 
       if (emailTaken) {
         setTextError('Email already taken');
-        // setLoading(false);
         return;
       }
 
@@ -156,7 +139,6 @@ const AuthSection = () => {
 
       if (usernameTaken) {
         setTextError('Username already taken');
-        // setLoading(false);
         return;
       }
 
@@ -164,13 +146,11 @@ const AuthSection = () => {
         setTextError(
           'Password must be at least 8 characters long and contain at least one number, one lowercase, one uppercase letter and one special character.'
         );
-        // setLoading(false);
         return;
       }
 
       if (password !== confirmPassword) {
         setTextError('Passwords do not match');
-        // setLoading(false);
         return;
       }
 
@@ -179,17 +159,15 @@ const AuthSection = () => {
           const newUserData: any = { ...userDocData };
           // @ts-ignore
           delete newUserData.password;
-          // setLoggedInUser(newUserData);
           window.localStorage.setItem(
             USER_STORAGE_KEY,
             JSON.stringify(newUserData)
           );
           setSignUpSuccessText('Sign up successful.');
           clearInputs();
-          // router.push('/');
           setTimeout(() => {
             window.location.href = window.location.origin;
-          }, 500);
+          }, 300);
         })
         .catch((err) => console.log('firebase error', err));
 
@@ -206,11 +184,6 @@ const AuthSection = () => {
       setAuthState(AUTH_SIGN_IN);
     }
   };
-
-  // TODO: replace by a loading component
-  if (user) {
-    return null;
-  }
 
   return (
     <Section height="800px">

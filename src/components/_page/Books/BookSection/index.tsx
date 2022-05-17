@@ -13,8 +13,6 @@ const BookSection = () => {
 
   const slicedImages = useMemo(() => images.slice(0, numOfBooks), [numOfBooks]);
 
-  console.log('slice images', slicedImages.length);
-
   const handleLoadMore = () => {
     setNumOfBooks(numOfBooks + 10);
   };
