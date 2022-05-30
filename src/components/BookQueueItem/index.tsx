@@ -11,21 +11,23 @@ export interface BookQueueItemProps {
   id: string;
   image: string | StaticImageData;
   title: string;
-  date: string;
+  date?: string;
   genre: string;
-  status: StatusType;
+  status?: StatusType;
   className?: string;
+  children?: React.ReactNode;
 }
 
-const BookQueueItem = ({
+const BookQueueItem: React.FC<BookQueueItemProps> = ({
   id,
   image,
   title,
   date,
   genre,
   status,
-  className
-}: BookQueueItemProps) => {
+  className,
+  children
+}) => {
   return (
     <StyledBookQueueItem className={className}>
       <div className="image-wrapper">
@@ -44,7 +46,8 @@ const BookQueueItem = ({
       <div>{title}</div>
       <div>{date}</div>
       <div>{genre}</div>
-      <span className={`${status.toLowerCase()}`}>{status}</span>
+      {status && <span className={`${status.toLowerCase()}`}>{status}</span>}
+      {children}
     </StyledBookQueueItem>
   );
 };

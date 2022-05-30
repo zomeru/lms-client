@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Section } from '@/components';
 import { useDimensions } from '@/hooks';
@@ -7,6 +7,11 @@ import { StyledMainSettings } from './style';
 
 const Main = () => {
   const { width } = useDimensions();
+
+  const [selected, setSelected] = useState('Profile');
+
+  console.log('selected', selected);
+
   return (
     <Section
       minHeight={
@@ -14,8 +19,8 @@ const Main = () => {
       }
     >
       <StyledMainSettings>
-        <Sidebar />
-        <Content />
+        <Sidebar selected={selected} setSelected={setSelected} />
+        <Content selected={selected} />
       </StyledMainSettings>
     </Section>
   );
