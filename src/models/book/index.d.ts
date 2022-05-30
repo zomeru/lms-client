@@ -12,5 +12,5 @@ export interface IBook {
   characters: string[];
   photoUrl: string;
   createdAt: FieldValue;
-  updatedAt: FieldValue;
+  updatedAt?: FieldValue;
 }

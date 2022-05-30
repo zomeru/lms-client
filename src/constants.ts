@@ -143,3 +143,8 @@ export const BOOK_GENRES_NONFICTION = [
   'Travel',
   'True crime'
 ];
+
+export const SETTINGS_SIDEBAR = {
+  USER: ['Profile'],
+  ADMIN: ['Books', 'Requests']
+};
