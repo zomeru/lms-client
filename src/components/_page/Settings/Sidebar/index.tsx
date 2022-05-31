@@ -64,11 +64,16 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
         {role.length > 0 &&
           role.includes('Admin') &&
           SETTINGS_SIDEBAR.ADMIN.map((el) => {
+            const bookActive =
+              selected === 'Add Book' && el === 'Books' ? 'sb-btn-active' : '';
+
             return (
               <button
                 key={el}
                 type="button"
-                className={`sb-btn ${selected === el ? 'sb-btn-active' : ''}`}
+                className={`sb-btn ${
+                  selected === el ? 'sb-btn-active' : ''
+                } ${bookActive}`}
                 onClick={() => {
                   onSidebarButtonClick(el);
                 }}

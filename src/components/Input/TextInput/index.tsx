@@ -19,6 +19,7 @@ const TextInput = ({
   value,
   setValue,
   type = 'text',
+
   inputProps
 }: TextInputProps) => {
   return (
@@ -28,7 +29,20 @@ const TextInput = ({
       </label>
       <input
         value={value}
-        onChange={(e) => setValue && setValue(e.target.value.trim())}
+        onChange={(e) => {
+          if (setValue) {
+            const val = e.target.value;
+            let newVal = '';
+            if (type === 'number') {
+              newVal = val.replace(/\D+/g, '');
+            } else if (type === 'password') {
+              newVal = val.trim();
+            } else {
+              newVal = val;
+            }
+            setValue(newVal);
+          }
+        }}
         className="input"
         type={type}
         placeholder={label}

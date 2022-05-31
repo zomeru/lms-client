@@ -20,7 +20,7 @@ const Main = () => {
     >
       <StyledMainSettings>
         <Sidebar selected={selected} setSelected={setSelected} />
-        <Content selected={selected} />
+        <Content selected={selected} setSelected={setSelected} />
       </StyledMainSettings>
     </Section>
   );

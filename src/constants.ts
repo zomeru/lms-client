@@ -148,3 +148,5 @@ export const SETTINGS_SIDEBAR = {
   USER: ['Profile'],
   ADMIN: ['Books', 'Requests']
 };
+
+export const VALID_FILE_TYPES = ['image/png', 'image/gif', 'image/jpeg'];

@@ -6,7 +6,11 @@ import { IBook } from '@/models/book';
 import { db } from '@/utils/firebase';
 import { StyledBookList } from './style';
 
-const BookList = () => {
+export interface BookListProps {
+  setSelected: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const BookList = ({ setSelected }: BookListProps) => {
   const [books, setBooks] = useState<IBook[]>([]);
 
   console.log('books', books);
@@ -52,7 +56,11 @@ const BookList = () => {
 
   return (
     <StyledBookList>
-      <button type="button" className="action-btn add-btn">
+      <button
+        type="button"
+        className="action-btn add-btn"
+        onClick={() => setSelected('Add Book')}
+      >
         Add book +
       </button>
 
