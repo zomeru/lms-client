@@ -11,11 +11,11 @@ export interface IContentProps {
 
 const Content = ({ selected, setSelected }: IContentProps) => {
   const renderContent = () => {
-    if (selected === 'books') {
+    if (selected === 'Books') {
       return <BookList setSelected={setSelected} />;
     }
 
-    if (selected === 'addBook') {
+    if (selected === 'Add Book') {
       return <AddBook setSelected={setSelected} />;
     }
 
