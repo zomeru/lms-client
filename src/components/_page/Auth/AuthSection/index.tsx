@@ -108,10 +108,10 @@ const AuthSection = () => {
     } else {
       // ? REGISTER
       const userDocData: IUser = {
-        firstName,
-        lastName,
-        username: username.toLowerCase(),
-        email,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        username: username.toLowerCase().trim(),
+        email: email.trim(),
         password: hashPassword(password),
         role: ['User'],
         createdAt: serverTimestamp(),

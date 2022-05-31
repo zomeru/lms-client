@@ -32,6 +32,6 @@ export const StyledBookList = styled.div`
   .add-btn {
     font-size: 25px;
     margin-bottom: 20px;
-    align-self: flex-end;
+    align-self: center;
   }
 `;
