@@ -76,7 +76,7 @@ const AuthSection = () => {
       const docRef = doc(db, 'users', signInUsername);
       const docSnapshot = await getDoc(docRef);
 
-      if (!docSnapshot.exists) {
+      if (!docSnapshot.exists()) {
         setTextError('Invalid username or password.');
         return;
       }

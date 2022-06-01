@@ -9,7 +9,7 @@ import { StyledBookCard } from './style';
 export interface BookCardProps {
   title: string;
   image: string;
-  rating: number;
+  rating?: number;
   id: string | number;
   favorite?: boolean;
   onFavoriteClick?: () => void;
