@@ -1,39 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 
-import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/utils/firebase';
 import { SETTINGS_SIDEBAR } from '@/constants';
-import { IRole } from '@/models/user';
+import { IUser } from '@/models/user';
+import { useDoc } from '@/hooks';
 import { StyledSidebar } from './style';
 
 export interface SidebarProps {
   selected: string;
   setSelected: React.Dispatch<React.SetStateAction<string>>;
+  userEmail: string;
 }
 
-const Sidebar = ({ selected, setSelected }: SidebarProps) => {
-  const { user } = useAuth();
+const Sidebar = ({ selected, setSelected, userEmail }: SidebarProps) => {
+  const [newUser, setNewUser] = useState<IUser | null>(null);
 
-  const [role, setRole] = useState<IRole[]>([]);
+  const [queryUser, loading] = useDoc<IUser>(doc(db, 'users', userEmail));
 
   useEffect(() => {
-    async function getUserRole() {
-      try {
-        const docRef = doc(db, 'users', user?.email || '');
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const newRole: IRole[] = docSnap.data().role;
-          setRole(newRole);
-        }
-      } catch (error) {
-        console.log('get user role error', error);
+    if (!loading) {
+      if (queryUser) {
+        setNewUser(queryUser);
       }
     }
-
-    getUserRole();
-  }, [user]);
+  }, [loading]);
 
   const onSidebarButtonClick = (el: string) => {
     setSelected(el);
@@ -44,7 +35,6 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
       <div className="role-section">
         <h3 className="role-header">Account Settings</h3>
         {SETTINGS_SIDEBAR.USER.map((el) => {
-          console.log(selected === el);
           return (
             <button
               key={el}
@@ -60,9 +50,12 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
         })}
       </div>
       <div className="role-section">
-        <h3 className="role-header">Admin Settings</h3>
-        {role.length > 0 &&
-          role.includes('Admin') &&
+        {!loading && newUser && newUser.role.includes('Admin') && (
+          <h3 className="role-header">Admin Settings</h3>
+        )}
+        {!loading &&
+          newUser &&
+          newUser.role.includes('Admin') &&
           SETTINGS_SIDEBAR.ADMIN.map((el) => {
             const bookActive =
               selected === 'Add Book' && el === 'Books' ? 'sb-btn-active' : '';

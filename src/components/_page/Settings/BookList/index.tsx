@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, orderBy, query, deleteDoc, doc } from 'firebase/firestore';
+import { ref, deleteObject } from 'firebase/storage';
+import { toast } from 'react-toastify';
 
 import { BookQueueItem } from '@/components/';
 import { IBook } from '@/models/book';
-import { db } from '@/utils/firebase';
+import { db, storage } from '@/utils/firebase';
+import { useCol } from '@/hooks';
 import { StyledBookList } from './style';
 
 export interface BookListProps {
@@ -12,42 +15,58 @@ export interface BookListProps {
 
 const BookList = ({ setSelected }: BookListProps) => {
   const [books, setBooks] = useState<IBook[]>([]);
-
-  console.log('books', books);
-
-  const image =
-    'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2016%2F09%2Fkkhp1-lg.jpg';
+  const [booksData, loading, queryError] = useCol<IBook>(
+    query(collection(db, 'books'), orderBy('updatedAt', 'desc'))
+  );
 
   useEffect(() => {
-    async function getAllBooks() {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'books'));
+    if (!loading) {
+      if (booksData) {
+        setBooks(booksData);
+        return;
+      }
 
-        if (querySnapshot) {
-          const newBooks = querySnapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            } as IBook;
-          });
-
-          setBooks(newBooks);
-        }
-      } catch (error) {
-        console.log('get all books error', error);
+      if (queryError) {
+        toast.error('Failed to load list of books');
       }
     }
+  }, [loading]);
 
-    getAllBooks();
-  }, []);
+  // useEffect(() => {
+  //   if (queryError && !loading) {
+  //     toast.error('Failed to load list of books');
+  //   }
+  // }, [queryError]);
 
-  const renderBookItemActions = () => {
+  const handleDeleteBook = async (id: string, imgRef: string) => {
+    try {
+      await deleteDoc(doc(db, 'books', id));
+      const newBookArray = books?.filter((book) => book.id !== id);
+      setBooks(newBookArray);
+      toast.success('Book deleted successfully');
+
+      const bookImageRef = ref(storage, imgRef);
+      await deleteObject(bookImageRef);
+    } catch (error) {
+      const err: any = error;
+      console.log('delete book error', err);
+      toast.error("Something wen't wrong. Failed to add book.");
+    }
+  };
+
+  const renderBookItemActions = (id: string, imgRef: string) => {
     return (
       <div className="book-item-actions ">
         <button type="button" className="action-btn">
           Edit
         </button>
-        <button type="button" className="action-btn">
+        <button
+          type="button"
+          className="action-btn"
+          onClick={() => {
+            handleDeleteBook(id, imgRef);
+          }}
+        >
           Delete
         </button>
       </div>
@@ -64,20 +83,21 @@ const BookList = ({ setSelected }: BookListProps) => {
         Add book +
       </button>
 
-      {books.length > 0 &&
+      {books &&
+        books.length > 0 &&
         books.map((item) => {
-          const { id, title, genre } = item;
+          const { id, title, genre, images } = item;
 
           return (
             <BookQueueItem
               className="book-list-item"
               key={id}
               id={id!}
-              image={image}
+              image={images[0].url}
               genre={genre[0]}
               title={title}
             >
-              {renderBookItemActions()}
+              {renderBookItemActions(id!, images[0].url)}
             </BookQueueItem>
           );
         })}

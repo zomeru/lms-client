@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 
 import { Section, SimpleButton } from '@/components';
 import { IBook } from '@/models/book';
 import { db } from '@/utils/firebase';
 import Loader from '@/components/Loader';
+import { useDoc } from '@/hooks';
 import { StyledBookDescription } from './style';
 
 const BookDescription = () => {
@@ -15,39 +16,23 @@ const BookDescription = () => {
   const [loading, setLoading] = useState(true);
   console.log('router', router);
 
+  const [bookInfo, queryLoading] = useDoc<IBook>(
+    doc(db, 'books', router.asPath.split('/')[2] ?? '')
+  );
+
   useEffect(() => {
-    async function getBookDes() {
-      if (router.asPath) {
-        const bookId = router.asPath.split('/')[2];
+    if (!queryLoading) {
+      if (bookInfo === null || bookInfo === undefined) {
+        router.push('/404');
+      } else {
+        setBook(bookInfo);
 
-        try {
-          const docRef = doc(db, 'books', bookId);
-          const docSnapshot = await getDoc(docRef);
-
-          if (docSnapshot && !docSnapshot.exists) {
-            router.push('/404');
-            return;
-          }
-
-          const bookData = docSnapshot.data() as IBook;
-          setBook(bookData);
-
-          setTimeout(() => {
-            setLoading(false);
-          }, 300);
-          console.log('book Data', bookData);
-        } catch (error) {
-          router.push('/404');
-          console.log('get book error', error);
-        }
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
       }
     }
-
-    getBookDes();
-  }, [router.asPath]);
-
-  const image =
-    'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2016%2F09%2Fkkhp1-lg.jpg';
+  }, [bookInfo, queryLoading]);
 
   const handleBorrowBook = () => {};
 
@@ -62,7 +47,7 @@ const BookDescription = () => {
           <div className="image-container">
             <div className="image-wrapper">
               <Image
-                src={book.imageUrls ? book.imageUrls[0] : image}
+                src={book.images[0].url}
                 layout="fill"
                 objectFit="cover"
                 objectPosition="center"
