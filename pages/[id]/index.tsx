@@ -14,7 +14,10 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
 
   const [newUser, queryLoading] = useCol<IUser>(
-    query(collection(db, 'users'), where('username', '==', router.query.id))
+    query(
+      collection(db, 'users'),
+      where('username', '==', router.asPath.split('/')[2] ?? '')
+    )
   );
 
   console.log('newUser', newUser);
@@ -22,7 +25,7 @@ const UserProfile = () => {
   useEffect(() => {
     function checkUser() {
       if (!queryLoading) {
-        if (user?.username === router.query.id) {
+        if (user?.username === router.asPath.split('/')[2]) {
           setLoading(false);
           return;
         }
