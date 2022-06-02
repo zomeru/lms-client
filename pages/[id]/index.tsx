@@ -1,40 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where } from 'firebase/firestore';
 
 import { Layout, Loader, NextSeoHead } from '@/components';
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/utils/firebase';
+import { IUser } from '@/models/user';
+import { useCol } from '@/hooks';
 
 const UserProfile = () => {
   const { user } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
+  const [newUser, queryLoading] = useCol<IUser>(
+    query(collection(db, 'users'), where('username', '==', router.query.id))
+  );
+
+  console.log('newUser', newUser);
+
   useEffect(() => {
-    async function checkUser() {
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('username', '==', router.query.id));
-      const snapshot = await getDocs(q);
-      const userExists = snapshot.docs.length > 0;
+    function checkUser() {
+      if (!queryLoading) {
+        if (user?.username === router.query.id) {
+          setLoading(false);
+          return;
+        }
 
-      console.log('user', user?.username === router.query.id);
-      console.log('user exists', userExists);
-
-      if (user?.username === router.query.id || userExists) {
-        setLoading(false);
-        return;
+        router.push('/404');
       }
-
-      router.push('/404');
     }
 
-    const timeout = setTimeout(checkUser, 1000);
+    const timeout = setTimeout(checkUser, 700);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [user, router.query.id]);
+  }, [newUser, queryLoading]);
 
   if (loading) {
     return <Loader />;

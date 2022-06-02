@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import React from 'react';
+import { doc } from 'firebase/firestore';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/utils/firebase';
 import { SETTINGS_SIDEBAR } from '@/constants';
-import { IRole } from '@/models/user';
+import { IUser } from '@/models/user';
+import { useDoc } from '@/hooks';
 import { StyledSidebar } from './style';
 
 export interface SidebarProps {
@@ -15,25 +16,7 @@ export interface SidebarProps {
 const Sidebar = ({ selected, setSelected }: SidebarProps) => {
   const { user } = useAuth();
 
-  const [role, setRole] = useState<IRole[]>([]);
-
-  useEffect(() => {
-    async function getUserRole() {
-      try {
-        const docRef = doc(db, 'users', user?.email || '');
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const newRole: IRole[] = docSnap.data().role;
-          setRole(newRole);
-        }
-      } catch (error) {
-        console.log('get user role error', error);
-      }
-    }
-
-    getUserRole();
-  }, [user]);
+  const [newUser, loading] = useDoc<IUser>(doc(db, 'users', user?.email ?? ''));
 
   const onSidebarButtonClick = (el: string) => {
     setSelected(el);
@@ -60,9 +43,12 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
         })}
       </div>
       <div className="role-section">
-        <h3 className="role-header">Admin Settings</h3>
-        {role.length > 0 &&
-          role.includes('Admin') &&
+        {!loading && newUser && newUser.role.includes('Admin') && (
+          <h3 className="role-header">Admin Settings</h3>
+        )}
+        {!loading &&
+          newUser &&
+          newUser.role.includes('Admin') &&
           SETTINGS_SIDEBAR.ADMIN.map((el) => {
             const bookActive =
               selected === 'Add Book' && el === 'Books' ? 'sb-btn-active' : '';

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AiOutlineHeart, AiFillHeart, AiFillStar } from 'react-icons/ai';
 
-import { SampleBook } from '@/assets';
 import { StyledBookCard } from './style';
 
 export interface BookCardProps {
@@ -28,12 +27,7 @@ const BookCard = ({
   return (
     <StyledBookCard className={className}>
       <div className="image-wrapper">
-        <Image
-          className="image"
-          src={image ?? SampleBook}
-          layout="fill"
-          objectFit="cover"
-        />
+        <Image className="image" src={image} layout="fill" objectFit="cover" />
         <div className="hover-overlay">
           <div className="rating-container">
             <AiFillStar className="rating-icon" />

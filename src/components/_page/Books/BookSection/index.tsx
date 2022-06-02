@@ -1,42 +1,34 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 import { Section, BookCard, SimpleButton } from '@/components';
 import { IBook } from '@/models/book';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
+import { useCol } from '@/hooks';
 import { StyledBookSection } from './style';
 
 const BookSection = () => {
   const [numOfBooks, setNumOfBooks] = useState(10);
   const [books, setBooks] = useState<IBook[]>([]);
 
-  console.log('books', books);
+  const [booksData, loading, error] = useCol<IBook>(
+    query(collection(db, 'books'), orderBy('updatedAt', 'desc'))
+  );
 
   useEffect(() => {
-    async function getAllBooks() {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'books'));
-
-        if (querySnapshot) {
-          const newBooks = querySnapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            } as IBook;
-          });
-
-          setBooks(newBooks);
-        }
-      } catch (error) {
-        console.log('get all books error', error);
+    if (!loading) {
+      if (booksData) {
+        setBooks(booksData);
       }
     }
+  }, [booksData, loading]);
 
-    getAllBooks();
-  });
-
-  const image =
-    'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2016%2F09%2Fkkhp1-lg.jpg';
+  useEffect(() => {
+    if (error && !loading) {
+      toast.error('Failed to display books');
+    }
+  }, [error]);
 
   const slicedBooks = useMemo(
     () => books.slice(0, numOfBooks),
@@ -59,7 +51,7 @@ const BookSection = () => {
                 key={img?.id}
                 title={img.title}
                 rating={0}
-                image={img.imageUrls ? img.imageUrls[0] : image}
+                image={img.images[0].url}
                 // favorite={topBookFavorites[i]}
                 onFavoriteClick={() => {}}
               />

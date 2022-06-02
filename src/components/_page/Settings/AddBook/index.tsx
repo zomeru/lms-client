@@ -1,21 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
-import {
-  collection,
-  getDocs,
-  serverTimestamp,
-  addDoc
-} from 'firebase/firestore';
-import { ref, getDownloadURL } from 'firebase/storage';
-import { useUploadFile } from 'react-firebase-hooks/storage';
+import { collection, serverTimestamp, addDoc } from 'firebase/firestore';
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
+
+import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 import { TextArea, TextInput } from '@/components/Input';
-import { BookGenreType, IBook } from '@/models/book';
+import { BookGenreType, IBook, ImageType } from '@/models/book';
 import { db, storage } from '@/utils/firebase';
 import Select from '@/components/Input/Select';
 import { VALID_FILE_TYPES } from '@/constants';
-import { useFileHandler } from '@/hooks';
-import Image from 'next/image';
+import { useCol, useFileHandler } from '@/hooks';
 import { keyGenerator } from '@/utils/functions';
 import { StyledAddBook } from './style';
 
@@ -32,43 +28,28 @@ const AddBook = ({ setSelected }: AddBookProps) => {
   const [copies, setCopies] = useState('');
   const [images, setImages] = useState<string[]>([]);
 
-  const [genres, setGenres] = useState<BookGenreType[]>([]);
   const bookFileRef = useRef<HTMLInputElement>(null);
 
-  const [addBookError, setAddBookError] = useState('');
-
   const [bookFileHandler, bookImages] = useFileHandler();
-  const [uploadFile] = useUploadFile();
 
-  // console.log('bookImages', bookImages);
+  const [genresData, loading] = useCol<{
+    name: string;
+    type: 'fiction' | 'non-fiction';
+    active: boolean;
+  }>(collection(db, 'genres'));
 
-  useEffect(() => {
-    async function getAllGenres() {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'genres'));
+  const genres = useMemo(
+    () =>
+      genresData
+        ?.map((item) => item.name)
+        .sort((a, b) => {
+          if (a < b) return -1;
+          if (a > b) return 1;
 
-        if (querySnapshot) {
-          const newGenres = querySnapshot.docs.map((doc) => {
-            return doc.data().name as BookGenreType;
-          });
-
-          const sortedGenres = newGenres.sort((a, b) => {
-            if (a < b) return -1;
-            if (a > b) return 1;
-
-            return 0;
-          });
-
-          setGenres(sortedGenres);
-          setGenre(sortedGenres[0]);
-        }
-      } catch (error) {
-        console.log('get all books error', error);
-      }
-    }
-
-    getAllGenres();
-  }, []);
+          return 0;
+        }),
+    [genresData]
+  );
 
   useEffect(() => {
     if (bookImages) {
@@ -84,66 +65,82 @@ const AddBook = ({ setSelected }: AddBookProps) => {
   }, [bookImages]);
 
   const uploadImage = async (files: File[]) => {
-    const imgUrls: string[] = [];
+    const newImages: ImageType[] = [];
 
     if (files.length > 0) {
       for (let i = 0; i < files.length; i++) {
-        const storageRef = ref(
-          storage,
-          `books/${keyGenerator(i)}-${files[i].name}`
-        );
-        const img = await uploadFile(storageRef, files[i]);
-        // const img = await uploadBytes(storageRef, files[i]);
-
-        console.log('img', img);
+        const imageRef = `books/${keyGenerator(i)}-${files[i].name}`;
+        const storageRef = ref(storage, imageRef);
+        const img = await uploadBytes(storageRef, files[i]);
 
         const imgUrl = await getDownloadURL(ref(storage, img?.ref.fullPath));
-        console.log('imgUrl', imgUrl);
 
-        if (img?.ref.fullPath) imgUrls.push(imgUrl);
+        const image = {
+          url: imgUrl,
+          ref: imageRef
+        };
+
+        if (img?.ref.fullPath) newImages.push(image);
       }
     }
-    return imgUrls;
+    return newImages;
   };
 
   const handleAddBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const imageUrls = await uploadImage(bookImages);
+      const imagesUrls = await uploadImage(bookImages);
+
+      console.log('imageUrls', images);
 
       let payload = {} as IBook;
 
-      if (imageUrls) {
+      if (images) {
+        const timestamp = serverTimestamp();
+
         payload = {
           title: title.trim(),
           author: author.trim(),
           genre: [genre as BookGenreType],
           summary: summary.trim(),
           copies: parseInt(copies, 10),
-          createdAt: serverTimestamp(),
-          imageUrls,
-          available: parseInt(copies, 10)
+          createdAt: timestamp,
+          updatedAt: timestamp,
+          images: imagesUrls,
+          available: parseInt(copies, 10),
+          views: 0,
+          borrowsCount: 0,
+          rating: 0,
+          totalRating: 0,
+          likes: 0
+          // bookRef
         };
+
+        console.log('payload', payload);
 
         const addedBook = await addDoc(collection(db, 'books'), payload);
 
         if (addedBook) {
+          toast.success('Book added successfully');
+
           setTitle('');
           setAuthor('');
-          setGenre(genres[0]);
+          setGenre(genres ? genres[0] : '');
           setSummary('');
           setCopies('');
           setImages([]);
-        }
 
-        setTimeout(() => {
-          setSelected('books');
-        }, 100);
+          setTimeout(() => {
+            setSelected('Books');
+          }, 100);
+        }
       }
     } catch (error) {
-      console.log('add book error', error);
-      setAddBookError("Something wen't wrong. Failed to add book.");
+      const err: any = error;
+      console.log('add book error', err);
+      toast.error("Something wen't wrong. Failed to add book.");
+      // setAddBookError("Something wen't wrong. Failed to add book.");
     }
   };
 
@@ -164,6 +161,7 @@ const AddBook = ({ setSelected }: AddBookProps) => {
           multiple
           type="file"
           onChange={bookFileHandler}
+          required
         />
       </>
     );
@@ -244,7 +242,7 @@ const AddBook = ({ setSelected }: AddBookProps) => {
               required: true
             }}
           />
-          {genres.length > 0 && (
+          {!loading && genres && genres.length > 0 && (
             <Select
               className="spacing"
               id="book-genres"
@@ -262,8 +260,6 @@ const AddBook = ({ setSelected }: AddBookProps) => {
         <button type="submit" className="add-book-btn spacing">
           Add Book
         </button>
-
-        {addBookError && <p className="error-text">{addBookError}</p>}
       </div>
     </StyledAddBook>
   );
