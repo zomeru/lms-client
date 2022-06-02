@@ -19,6 +19,8 @@ const BookList = ({ setSelected }: BookListProps) => {
     query(collection(db, 'books'), orderBy('updatedAt', 'desc'))
   );
 
+  console.log('booksData', booksData);
+
   useEffect(() => {
     if (!loading) {
       if (booksData) {
@@ -86,7 +88,9 @@ const BookList = ({ setSelected }: BookListProps) => {
       {books &&
         books.length > 0 &&
         books.map((item) => {
-          const { id, title, genre, images } = item;
+          const { id, title, genre, images, updatedAt } = item;
+          const newDate = updatedAt as any;
+          const date = new Date(newDate.seconds * 1000);
 
           return (
             <BookQueueItem
@@ -96,6 +100,8 @@ const BookList = ({ setSelected }: BookListProps) => {
               image={images[0].url}
               genre={genre[0]}
               title={title}
+              date={date.toISOString().slice(0, 10)}
+              bookId={id!}
             >
               {renderBookItemActions(id!, images[0].url)}
             </BookQueueItem>

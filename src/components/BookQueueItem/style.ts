@@ -18,6 +18,13 @@ export const StyledBookQueueItem = styled.div`
     border-radius: 8px;
   }
 
+  .title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100px; // some width
+  }
+
   .approved {
     color: #0b9c45;
   }

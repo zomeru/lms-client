@@ -17,4 +17,5 @@ export interface IBorrowRequest {
   title: string;
   genre: IGenreFiction | IGenreNonFiction;
   updatedAt?: FieldValue;
+  name?: string;
 }
