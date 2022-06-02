@@ -1,26 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { collection, orderBy, limit, query } from 'firebase/firestore';
 
 import { Section, BookCard } from '@/components';
-import { keyGenerator } from '@/utils/functions';
+import { IBook } from '@/models/book';
+import { useCol } from '@/hooks';
+import { db } from '@/utils/firebase';
 import { StyledBookContainer } from './style';
 
 const HomeBooks = () => {
-  const images = Array(5).fill(
-    'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2016%2F09%2Fkkhp1-lg.jpg'
+  const [newBooks, setNewBooks] = useState<IBook[]>([]);
+  const [topBooks, setTopBooks] = useState<IBook[]>([]);
+
+  const [newBooksData, queryNewLoading] = useCol<IBook>(
+    query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(5))
   );
 
-  const [topBookFavorites, setTopBookFavorites] = useState<boolean[]>([]);
-  const [newBookFavorites, setNewBookFavorites] = useState<boolean[]>([]);
+  const [topBooksData, queryTopLoading] = useCol<IBook>(
+    query(collection(db, 'books'), orderBy('createdAt', 'asc'), limit(5))
+  );
 
-  const handleFavoriteClick = (
-    i: number,
-    favorites: boolean[],
-    setFavorites: React.Dispatch<React.SetStateAction<boolean[]>>
-  ) => {
-    const newFavorites = [...favorites];
-    newFavorites[i] = !newFavorites[i];
-    setFavorites(newFavorites);
-  };
+  useEffect(() => {
+    if (!queryNewLoading) {
+      if (newBooksData) {
+        setNewBooks(newBooksData);
+      }
+    }
+  }, [queryNewLoading]);
+
+  useEffect(() => {
+    if (!queryTopLoading) {
+      if (topBooksData) {
+        setTopBooks(topBooksData);
+      }
+    }
+  }, [queryTopLoading]);
+
+  // const handleFavoriteClick = (
+  //   i: number,
+  //   favorites: boolean[],
+  //   setFavorites: React.Dispatch<React.SetStateAction<boolean[]>>
+  // ) => {
+  //   const newFavorites = [...favorites];
+  //   newFavorites[i] = !newFavorites[i];
+  //   setFavorites(newFavorites);
+  // };
 
   return (
     <Section>
@@ -28,22 +51,23 @@ const HomeBooks = () => {
         <div className="top-book-container">
           <h2 className="header-title">Top Books</h2>
           <div className="book-container">
-            {images &&
-              images.map((img, i) => (
+            {topBooks &&
+              topBooks.length > 0 &&
+              topBooks.map((book) => (
                 <BookCard
-                  id={keyGenerator(i)}
-                  key={`${img}_${keyGenerator(i)}`}
-                  title="Title here"
+                  id={book.id!}
+                  key={book.id!}
+                  title={book.title}
                   rating={0}
-                  image={img}
-                  favorite={topBookFavorites[i]}
-                  onFavoriteClick={() =>
-                    handleFavoriteClick(
-                      i,
-                      topBookFavorites,
-                      setTopBookFavorites
-                    )
-                  }
+                  image={book.images[0].url}
+                  // favorite={topBookFavorites[i]}
+                  // onFavoriteClick={() =>
+                  //   handleFavoriteClick(
+                  //     i,
+                  //     topBookFavorites,
+                  //     setTopBookFavorites
+                  //   )
+                  // }
                 />
               ))}
           </div>
@@ -51,22 +75,23 @@ const HomeBooks = () => {
         <div className="new-book-container">
           <h2 className="header-title">New Books</h2>
           <div className="book-container">
-            {images &&
-              images.map((img, i) => (
+            {newBooks &&
+              newBooks.length > 0 &&
+              newBooks.map((book) => (
                 <BookCard
-                  id={keyGenerator(i)}
-                  key={`${img}_${keyGenerator(i)}`}
-                  title="Title here"
+                  id={book.id!}
+                  key={book.id!}
+                  title={book.title}
                   rating={0}
-                  image={img}
-                  favorite={newBookFavorites[i]}
-                  onFavoriteClick={() =>
-                    handleFavoriteClick(
-                      i,
-                      newBookFavorites,
-                      setNewBookFavorites
-                    )
-                  }
+                  image={book.images[0].url}
+                  // favorite={topBookFavorites[i]}
+                  // onFavoriteClick={() =>
+                  //   handleFavoriteClick(
+                  //     i,
+                  //     topBookFavorites,
+                  //     setTopBookFavorites
+                  //   )
+                  // }
                 />
               ))}
           </div>
