@@ -72,6 +72,11 @@ const BookDescription = () => {
       return;
     }
 
+    if (book.available === 0) {
+      toast.error('No more available copies of this book');
+      return;
+    }
+
     try {
       const timestamp = serverTimestamp();
 

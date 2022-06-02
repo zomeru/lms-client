@@ -146,7 +146,15 @@ export const BOOK_GENRES_NONFICTION = [
 
 export const SETTINGS_SIDEBAR = {
   USER: ['Profile'],
-  ADMIN: ['Books', 'Requests']
+  ADMIN: [
+    'Books',
+    'Request history',
+    'Pending requests',
+    'Approved requests',
+    'Rejected requests',
+    'Cancelled requests',
+    'Returned books'
+  ]
 };
 
 export const VALID_FILE_TYPES = ['image/png', 'image/gif', 'image/jpeg'];

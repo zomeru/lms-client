@@ -8,6 +8,7 @@ import { StyledBookQueueItem } from './style';
 
 export interface BookQueueItemProps {
   id: string;
+  bookId: string;
   image: string | StaticImageData;
   title: string;
   date?: string;
@@ -25,7 +26,8 @@ const BookQueueItem: React.FC<BookQueueItemProps> = ({
   genre,
   status,
   className,
-  children
+  children,
+  bookId
 }) => {
   return (
     <StyledBookQueueItem className={className}>
@@ -41,10 +43,14 @@ const BookQueueItem: React.FC<BookQueueItemProps> = ({
           </a>
         </Link>
       </div>
-      <div>{id}</div>
-      <div>{title}</div>
-      <div>{date}</div>
-      <div>{genre}</div>
+      <Link href={`/books/${bookId}`} passHref>
+        <a className="links" href={`/books/${bookId}`}>
+          <p className="links">See book details</p>
+        </a>
+      </Link>
+      <p className="title">{title}</p>
+      <p>{date}</p>
+      <p>{genre}</p>
       {status && <span className={`${status.toLowerCase()}`}>{status}</span>}
       {children}
     </StyledBookQueueItem>

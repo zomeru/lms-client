@@ -14,6 +14,8 @@ const Queue = () => {
   const { width } = useDimensions();
   const [myBooks, setMyBooks] = useState<IBorrowRequest[]>([]);
 
+  console.log('myBooks', myBooks);
+
   const [borrowedBooks, queryLoading] = useCol<IBorrowRequest>(
     query(
       collection(db, 'borrows'),
@@ -56,6 +58,7 @@ const Queue = () => {
                   genre={borrow.genre}
                   status={borrow.status}
                   date={date.toISOString().slice(0, 10)}
+                  bookId={borrow.bookId}
                 />
               );
             })}
