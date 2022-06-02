@@ -1,24 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { doc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  query,
+  where,
+  updateDoc
+} from 'firebase/firestore';
 
 import { Section, SimpleButton } from '@/components';
 import { IBook } from '@/models/book';
 import { db } from '@/utils/firebase';
 import Loader from '@/components/Loader';
-import { useDoc } from '@/hooks';
+import { useCol, useDoc } from '@/hooks';
+import { BorrowRequestStatus, IBorrowRequest } from '@/models/borrowRuquest';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'react-toastify';
 import { StyledBookDescription } from './style';
 
 const BookDescription = () => {
+  const { user } = useAuth();
   const router = useRouter();
+
   const [book, setBook] = useState({} as IBook);
   const [loading, setLoading] = useState(true);
-  console.log('router', router);
+  const [borrowStatus, setBorrowStatus] = useState<BorrowRequestStatus | ''>(
+    ''
+  );
 
   const [bookInfo, queryLoading] = useDoc<IBook>(
     doc(db, 'books', router.asPath.split('/')[2] ?? '')
   );
+
+  const [borrowInfo, queryBorrowLoading] = useCol<IBorrowRequest>(
+    query(
+      collection(db, 'borrows'),
+      where('bookId', '==', router.asPath.split('/')[2] ?? ''),
+      where('user', '==', user?.email ?? ''),
+      where('status', 'in', ['pending', 'approved'])
+    )
+  );
+
+  useEffect(() => {
+    if (!queryBorrowLoading) {
+      if (borrowInfo && borrowInfo.length > 0) {
+        setBorrowStatus(borrowInfo[0].status);
+      }
+    }
+  }, [queryBorrowLoading]);
 
   useEffect(() => {
     if (!queryLoading) {
@@ -32,13 +64,77 @@ const BookDescription = () => {
         }, 300);
       }
     }
-  }, [bookInfo, queryLoading]);
+  }, [queryLoading]);
 
-  const handleBorrowBook = () => {};
+  const handleBorrowBook = async () => {
+    if (!user) {
+      toast.error('You must be logged in to borrow a book');
+      return;
+    }
+
+    try {
+      const timestamp = serverTimestamp();
+
+      const payload: IBorrowRequest = {
+        bookId: book.id!,
+        user: user.email,
+        status: 'pending',
+        createdAt: timestamp,
+        updatedAt: timestamp,
+        title: book.title,
+        genre: book.genre[0],
+        imageUrl: book.images[0].url
+      };
+
+      const addedBorrowRequest = await addDoc(
+        collection(db, 'borrows'),
+        payload
+      );
+
+      if (addedBorrowRequest) {
+        console.log('addedBorrowRequest', addedBorrowRequest);
+        setBorrowStatus('pending');
+        toast.success('Borrow request sent');
+      }
+    } catch (error) {
+      const err: any = error;
+      console.log('Borrow request error', err);
+      toast.error("Something went wrong, couldn't borrow the book");
+    }
+  };
+
+  const handleCancelBorrowRequest = async () => {
+    try {
+      const bookRef = doc(db, 'borrows', borrowInfo?.[0].id!);
+      await updateDoc(bookRef, {
+        status: 'cancelled',
+        updatedAt: serverTimestamp()
+      });
+
+      setBorrowStatus('');
+      toast.success('Borrow request cancelled');
+    } catch (error) {
+      const err: any = error;
+      console.log('Borrow request error', err);
+      toast.error("Something went wrong, couldn't cancel the borrow request");
+    }
+  };
 
   if (loading) {
     return <Loader />;
   }
+
+  const newBorrowStatus = () => {
+    if (borrowStatus === 'pending') {
+      return 'Borrow request pending';
+    }
+
+    if (borrowStatus === 'approved') {
+      return 'Already borrowed';
+    }
+
+    return 'Borrow book';
+  };
 
   return (
     <Section>
@@ -54,10 +150,20 @@ const BookDescription = () => {
               />
             </div>
             <SimpleButton
-              text="Borrow"
+              text={newBorrowStatus()}
               onClick={handleBorrowBook}
               className="borrow-button"
+              disabled={
+                borrowStatus === 'pending' || borrowStatus === 'approved'
+              }
             />
+            {borrowStatus === 'pending' && (
+              <SimpleButton
+                text="Cancel request"
+                onClick={handleCancelBorrowRequest}
+                disabled={borrowStatus !== 'pending'}
+              />
+            )}
           </div>
           <div className="des-container">
             <h3 className="book-title ">{book.title}</h3>

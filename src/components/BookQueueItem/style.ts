@@ -18,15 +18,23 @@ export const StyledBookQueueItem = styled.div`
     border-radius: 8px;
   }
 
-  .borrowed {
+  .approved {
     color: #0b9c45;
   }
 
-  .denied {
+  .rejected {
+    color: #ff0000;
+  }
+
+  .cancelled {
     color: #ff0000;
   }
 
   .pending {
     color: #ffa500;
+  }
+
+  .returned {
+    color: #20a6ff;
   }
 `;

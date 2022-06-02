@@ -3,9 +3,8 @@ import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 import { SampleBook } from '@/assets';
+import { BorrowRequestStatus } from '@/models/borrowRuquest';
 import { StyledBookQueueItem } from './style';
-
-export type StatusType = 'Borrowed' | 'Denied' | 'Pending';
 
 export interface BookQueueItemProps {
   id: string;
@@ -13,7 +12,7 @@ export interface BookQueueItemProps {
   title: string;
   date?: string;
   genre: string;
-  status?: StatusType;
+  status?: BorrowRequestStatus;
   className?: string;
   children?: React.ReactNode;
 }

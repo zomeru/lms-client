@@ -1,52 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { collection, orderBy, query, where } from 'firebase/firestore';
 
 import { Section, BookQueueItem } from '@/components';
-import { useDimensions } from '@/hooks';
-import { BOOK_GENRES_FICTION, BOOK_GENRES_NONFICTION } from '@/constants';
-import { BookQueueItemProps, StatusType } from '@/components/BookQueueItem';
+import { useCol, useDimensions } from '@/hooks';
+
+import { IBorrowRequest } from '@/models/borrowRuquest';
+import { useAuth } from '@/contexts/AuthContext';
+import { db } from '@/utils/firebase';
 import { StyledQueue } from './style';
 
-function genRand(min: number, max: number) {
-  const difference = max - min;
-  let rand = Math.random();
-  rand = Math.floor(rand * difference);
-  rand += min;
-  return rand;
-}
-
-const statuses: StatusType[] = ['Borrowed', 'Denied', 'Pending'];
-
 const Queue = () => {
+  const { user } = useAuth();
   const { width } = useDimensions();
-  const [data, setData] = useState<BookQueueItemProps[]>([]);
+  const [myBooks, setMyBooks] = useState<IBorrowRequest[]>([]);
+
+  const [borrowedBooks, queryLoading] = useCol<IBorrowRequest>(
+    query(
+      collection(db, 'borrows'),
+      where('user', '==', user?.email ?? ''),
+      orderBy('updatedAt', 'desc')
+    )
+  );
 
   useEffect(() => {
-    const books: BookQueueItemProps[] = [];
-
-    for (let i = 0; i < 10; i++) {
-      const today = new Date();
-      const dd = String(today.getDate()).padStart(2, '0');
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const yyyy = today.getFullYear();
-
-      const newData = {
-        id: `${today.getTime()}`,
-        title: 'Title here',
-        image:
-          'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2016%2F09%2Fkkhp1-lg.jpg',
-        genre:
-          genRand(1, 2) === 1
-            ? BOOK_GENRES_FICTION[genRand(0, BOOK_GENRES_FICTION.length)]
-            : BOOK_GENRES_NONFICTION[genRand(0, BOOK_GENRES_NONFICTION.length)],
-        status: statuses[genRand(0, 3)],
-        date: `${mm}/${dd}/${yyyy}`
-      };
-
-      books.push(newData);
+    if (!queryLoading) {
+      if (borrowedBooks && borrowedBooks.length > 0) {
+        setMyBooks(borrowedBooks);
+      }
     }
+  }, [queryLoading]);
 
-    setData(books);
-  }, []);
+  console.log('myBooks', myBooks);
 
   return (
     <Section
@@ -57,10 +41,24 @@ const Queue = () => {
       <StyledQueue>
         <h2 className="header">My books</h2>
         <div className="item-container">
-          {data &&
-            data.map((book) => (
-              <BookQueueItem className="queue-item" key={book.id} {...book} />
-            ))}
+          {myBooks.length > 0 &&
+            myBooks.map((borrow) => {
+              const newDate = borrow.updatedAt! as any;
+              const date = new Date(newDate.seconds * 1000);
+
+              return (
+                <BookQueueItem
+                  className="queue-item"
+                  key={borrow.id}
+                  id={borrow.id!}
+                  image={borrow.imageUrl}
+                  title={borrow.title}
+                  genre={borrow.genre}
+                  status={borrow.status}
+                  date={date.toISOString().slice(0, 10)}
+                />
+              );
+            })}
         </div>
       </StyledQueue>
     </Section>
