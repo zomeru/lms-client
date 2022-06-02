@@ -23,15 +23,20 @@ const BookList = ({ setSelected }: BookListProps) => {
     if (!loading) {
       if (booksData) {
         setBooks(booksData);
+        return;
+      }
+
+      if (queryError) {
+        toast.error('Failed to load list of books');
       }
     }
-  }, [booksData, loading]);
+  }, [loading]);
 
-  useEffect(() => {
-    if (queryError && !loading) {
-      toast.error('Failed to load list of books');
-    }
-  }, [queryError]);
+  // useEffect(() => {
+  //   if (queryError && !loading) {
+  //     toast.error('Failed to load list of books');
+  //   }
+  // }, [queryError]);
 
   const handleDeleteBook = async (id: string, imgRef: string) => {
     try {

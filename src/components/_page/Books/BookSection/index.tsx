@@ -20,15 +20,14 @@ const BookSection = () => {
     if (!loading) {
       if (booksData) {
         setBooks(booksData);
+        return;
+      }
+
+      if (error) {
+        toast.error('Failed to display books');
       }
     }
-  }, [booksData, loading]);
-
-  useEffect(() => {
-    if (error && !loading) {
-      toast.error('Failed to display books');
-    }
-  }, [error]);
+  }, [loading]);
 
   const slicedBooks = useMemo(
     () => books.slice(0, numOfBooks),

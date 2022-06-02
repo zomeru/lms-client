@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { doc } from 'firebase/firestore';
 
-import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/utils/firebase';
 import { SETTINGS_SIDEBAR } from '@/constants';
 import { IUser } from '@/models/user';
@@ -11,12 +10,21 @@ import { StyledSidebar } from './style';
 export interface SidebarProps {
   selected: string;
   setSelected: React.Dispatch<React.SetStateAction<string>>;
+  userEmail: string;
 }
 
-const Sidebar = ({ selected, setSelected }: SidebarProps) => {
-  const { user } = useAuth();
+const Sidebar = ({ selected, setSelected, userEmail }: SidebarProps) => {
+  const [newUser, setNewUser] = useState<IUser | null>(null);
 
-  const [newUser, loading] = useDoc<IUser>(doc(db, 'users', user?.email ?? ''));
+  const [queryUser, loading] = useDoc<IUser>(doc(db, 'users', userEmail));
+
+  useEffect(() => {
+    if (!loading) {
+      if (queryUser) {
+        setNewUser(queryUser);
+      }
+    }
+  }, [loading]);
 
   const onSidebarButtonClick = (el: string) => {
     setSelected(el);
@@ -27,7 +35,6 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
       <div className="role-section">
         <h3 className="role-header">Account Settings</h3>
         {SETTINGS_SIDEBAR.USER.map((el) => {
-          console.log(selected === el);
           return (
             <button
               key={el}

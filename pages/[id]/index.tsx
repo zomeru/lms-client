@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { collection, query, where } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 
 import { Layout, Loader, NextSeoHead } from '@/components';
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/utils/firebase';
 import { IUser } from '@/models/user';
-import { useCol } from '@/hooks';
+import { useDoc } from '@/hooks';
 
 const UserProfile = () => {
   const { user } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  const [newUser, queryLoading] = useCol<IUser>(
-    query(
-      collection(db, 'users'),
-      where('username', '==', router.asPath.split('/')[2] ?? '')
-    )
+  const [newUser, queryLoading] = useDoc<IUser>(
+    doc(db, 'users', router.asPath.split('/')[1] ?? '')
   );
 
-  console.log('newUser', newUser);
+  // const [newUser, queryLoading] = useCol<IUser>(
+  //   query(
+  //     collection(db, 'users'),
+  //     where('username', '==', router.asPath.split('/')[1] ?? '')
+  //   )
+  // );
+
+  // console.log('newUser', newUser);
+  // console.log('router.asPath.', router.asPath.split('/'));
 
   useEffect(() => {
     function checkUser() {
       if (!queryLoading) {
-        if (user?.username === router.asPath.split('/')[2]) {
+        const asPath = router.asPath.split('/')[1];
+
+        if (user?.username === asPath || newUser?.username === asPath) {
           setLoading(false);
           return;
         }
@@ -39,7 +46,7 @@ const UserProfile = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [newUser, queryLoading]);
+  }, [queryLoading]);
 
   if (loading) {
     return <Loader />;
