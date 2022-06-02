@@ -7,16 +7,23 @@ export interface SimpleButtonProps {
   onClick?: () => void;
   className?: string;
   type?: 'button' | 'submit' | 'reset' | undefined;
+  disabled?: boolean;
 }
 
 const SimpleButton = ({
   text,
   onClick,
   className = '',
-  type = 'button'
+  type = 'button',
+  disabled
 }: SimpleButtonProps) => {
   return (
-    <StyledSimpleButton type={type} className={className} onClick={onClick}>
+    <StyledSimpleButton
+      disabled={disabled}
+      type={type}
+      className={className}
+      onClick={onClick}
+    >
       {text}
     </StyledSimpleButton>
   );
